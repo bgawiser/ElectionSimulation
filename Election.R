@@ -5,6 +5,7 @@ library(caret)
 library(tm)
 library(stats)
 library(dplyr)
+library(sqldf)
 
 
 ongoingDSeats <- 35
@@ -99,8 +100,10 @@ SenateCounts <- SenateVals %>% group_by(DemSeats) %>% count()
 BidenEV
 TrumpEV
 pnorm(((BidenEV-TrumpEV)/2)/EVSD)
+round(mean(vals$EVs))
 mean(vals$Margins)
 evcounts[evcounts$n==max(evcounts$n),-2]
+sqldf("select sum(n) from evcounts where EVs>=320 and EVs<330")
 
 DemControls
 RepControls
