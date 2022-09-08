@@ -1,0 +1,35 @@
+State,CurParty,Dem,Rep,MOE
+Alabama,R,0,100,4
+Alaska,R,0,100,4
+Arizona,D,48,44,2.9
+California_1,D,100,0,4
+California_2,D,100,0,4
+Colorado,D,46,35,3.5
+Connecticut,D,100,0,4
+Florida,R,44,47,4.3
+Georgia,D,44,46,3.9
+Hawaii,D,100,0,4
+Idaho,R,0,100,4
+Illinois,D,100,0,4
+Iowa,R,39,47,4
+Kansas,R,0,100,4
+Kentucky,R,39,55,4
+Louisiana,R,0,100,4
+Maryland,D,100,0,4
+Missouri,R,40,51,3
+Nevada,D,48,47,4.4
+New Hampshire,D,41,46,2.7
+New York,D,100,0,4
+North Carolina,R,44,47,2.9
+North Dakota,R,0,100,4
+Ohio,R,45,50,2.9
+Oklahoma_1,R,0,100,4
+Oklahoma_2,R,0,100,4
+Oregon,D,100,0,4
+Pennsylvania,R,49,44,4
+South Carolina,R,0,100,4
+South Dakota,R,0,100,4
+Utah,R,36,41,3.5
+Vermont,D,100,0,4
+Washington,D,48,39,3
+Wisconsin,R,49,47,2.9
