@@ -8,10 +8,10 @@ library(dplyr)
 library(sqldf)
 
 
-ongoingDSeats <- 35
-ongoingRSeats <- 30
+ongoingDSeats <- 28
+ongoingRSeats <- 38
 
-setwd("~/Personal/Election")
+setwd("~/Personal/Election/ElectionSimulation")
 
 e_data <- read.csv("Election.csv")
 s_data <- read.csv("Senate.csv")
@@ -19,7 +19,7 @@ s_data <- read.csv("Senate.csv")
 #e_data$Trump <- e_data$Trump + 5
 
 e_data$SDEV <- e_data$MOE/1.96
-e_data$Diff <- e_data$Biden - e_data$Trump
+e_data$Diff <- e_data$Harris - e_data$Trump
 e_data$zScore <- e_data$Diff/(2*e_data$SDEV)
 e_data$Prob <- pnorm(e_data$zScore)
 e_data$ExpectedEV <- e_data$Prob*e_data$EVs
@@ -31,10 +31,10 @@ s_data$zScore <- s_data$Diff/(2*s_data$SDEV)
 s_data$Prob <- pnorm(s_data$zScore)
 
 
-BidenVictories <- 0
+HarrisVictories <- 0
 TrumpVictories <- 0
 Ties <- 0
-vals <- data.frame(BidenEVs=as.integer())
+vals <- data.frame(HarrisEVs=as.integer())
 
 DemControls <- 0
 RepControls <- 0
@@ -45,20 +45,20 @@ for(i in 1:100000)
 {
   
   e_data$CurSDs <- qnorm(runif(dim(e_data)[1],0,1))
-  curBidenEVs <- sum(((e_data$Biden+e_data$CurSDs*e_data$SDEV*2) > e_data$Trump) * e_data$EVs)
-  curBidenMargin <- sum(((e_data$Biden+e_data$CurSDs*e_data$SDEV*2) - e_data$Trump) * e_data$Votes/100)
+  curHarrisEVs <- sum(((e_data$Harris+e_data$CurSDs*e_data$SDEV*2) > e_data$Trump) * e_data$EVs)
+  curHarrisMargin <- sum(((e_data$Harris+e_data$CurSDs*e_data$SDEV*2) - e_data$Trump) * e_data$Votes/100)
   
   s_data$CurSDs <- qnorm(runif(dim(s_data)[1],0,1))
   curDemSeats <- sum((s_data$Dem+s_data$CurSDs*s_data$SDEV*2) > s_data$Rep) + ongoingDSeats
   
   
-  vals <- rbind(vals, c(curBidenEVs, curBidenMargin))
+  vals <- rbind(vals, c(curHarrisEVs, curHarrisMargin))
   SenateVals <- rbind(SenateVals, c(curDemSeats, 100 - curDemSeats))
   
-  if(curBidenEVs >= 270)
+  if(curHarrisEVs >= 270)
   {
-    BidenVictories <- BidenVictories + 1
-  } else if (curBidenEVs < 269)
+    HarrisVictories <- HarrisVictories + 1
+  } else if (curHarrisEVs < 269)
   {
     TrumpVictories <- TrumpVictories + 1
   } else
@@ -83,8 +83,8 @@ names(vals)[2]<-"Margins"
 names(SenateVals)[1]<-"DemSeats"
 names(SenateVals)[2]<-"RepSeats"
 
-BidenEV <- round(sum(e_data$ExpectedEV))
-TrumpEV <- 538 - BidenEV
+HarrisEV <- round(sum(e_data$ExpectedEV))
+TrumpEV <- 538 - HarrisEV
 EVSD <- sqrt(sum(e_data$EVSTDEV*e_data$EVSTDEV))
 
 ggplot(data=vals, aes(EVs)) + geom_histogram(aes(y=..density..), binwidth=5, color="black", fill="white") + 
@@ -97,9 +97,9 @@ ggplot(data=vals, aes(EVs)) + geom_histogram(aes(y=..density..), binwidth=5, col
 evcounts <- vals %>% group_by(EVs) %>% count()
 SenateCounts <- SenateVals %>% group_by(DemSeats) %>% count()
 
-BidenEV
+HarrisEV
 TrumpEV
-pnorm(((BidenEV-TrumpEV)/2)/EVSD)
+pnorm(((HarrisEV-TrumpEV)/2)/EVSD)
 round(mean(vals$EVs))
 mean(vals$Margins)
 evcounts[evcounts$n==max(evcounts$n),-2]
